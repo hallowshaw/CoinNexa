@@ -14,7 +14,13 @@ const BannerContainer = styled("div")(() => ({
   justifyContent: "space-around",
 }));
 
-const Tagline = styled("div")(() => ({}));
+const Tagline = styled("div")(() => ({
+  display: "flex",
+  height: "40%",
+  flexDirection: "column",
+  justifyContent: "center",
+  textAlign: "center",
+}));
 
 function Banner() {
   return (
