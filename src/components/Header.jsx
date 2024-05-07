@@ -10,6 +10,7 @@ import React from "react";
 import { ThemeProvider, styled } from "@mui/material/styles";
 import createTheme from "@mui/material/styles/createTheme";
 import { useNavigate } from "react-router-dom";
+import { CryptoState } from "../CryptoContext";
 
 const HeaderContainer = styled("div")(() => ({
   flex: 1,
@@ -26,7 +27,9 @@ const darkTheme = createTheme({
 });
 
 function Header() {
-  const navigateTo = useNavigate(); // Corrected the variable name to history
+  const navigateTo = useNavigate();
+
+  const { currency, setCurrency } = CryptoState();
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar color="transparent" position="static">
@@ -45,6 +48,8 @@ function Header() {
                 height: 40,
                 marginRight: 15,
               }}
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
             >
               <MenuItem value={"USD"}>USD</MenuItem>
               <MenuItem value={"INR"}>INR</MenuItem>
