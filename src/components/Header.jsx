@@ -37,7 +37,7 @@ function Header() {
           <Toolbar>
             <HeaderContainer>
               <Typography onClick={() => navigateTo("/")} variant="h6">
-                DigitalDimeVault
+                CoinNexa
               </Typography>
             </HeaderContainer>
 
