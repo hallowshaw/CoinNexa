@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { Container, Typography } from "@mui/material";
+import Carousel from "./Carousel";
 
 const BannerMain = styled("div")(() => ({
   backgroundImage: "url(./pageCover.jpg)",
@@ -50,6 +51,7 @@ function Banner() {
             </Typography>
           </Tagline>
         </BannerContainer>
+        <Carousel />
       </Container>
     </BannerMain>
   );
