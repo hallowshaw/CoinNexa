@@ -8,7 +8,7 @@ const BannerMain = styled("div")(() => ({
 }));
 
 const BannerContainer = styled("div")(() => ({
-  height: 400,
+  height: 250,
   display: "flex",
   flexDirection: "column",
   paddingTop: 25,
