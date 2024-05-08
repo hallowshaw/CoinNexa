@@ -26,7 +26,6 @@ function TrendingCarousel() {
   const responsive = {
     0: { items: 2 },
     512: { items: 4 },
-    1024: { items: 6 },
   };
 
   const items = trending.map((coin) => {
@@ -52,6 +51,7 @@ function TrendingCarousel() {
         autoPlayInterval={1000}
         animationDuration={1500}
         disableDotsControls
+        disableButtonsControls
         responsive={responsive}
         autoPlay
         items={items}
