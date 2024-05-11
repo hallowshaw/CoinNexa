@@ -24,6 +24,7 @@ function CoinPage() {
 
   useEffect(() => {
     fetchCoins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const MainContainer = styled("div")(() => ({
