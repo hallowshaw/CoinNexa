@@ -201,7 +201,7 @@ function CoinsTable() {
         </TableContainer>
 
         <Pagination
-          count={(handleSearch()?.length / 10).toFixed(0)}
+          count={Math.ceil(handleSearch().length / 10)} // Convert to integer using Math.ceil
           onChange={(_, value) => {
             setPage(value);
             window.scroll(0, 450);
