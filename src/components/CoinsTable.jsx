@@ -61,6 +61,7 @@ function CoinsTable() {
       backgroundColor: "#131111",
     },
     fontFamily: "Montserrat",
+    display: "flex",
   }));
 
   return (
@@ -177,11 +178,18 @@ function CoinsTable() {
 
         <Pagination
           count={(handleSearch()?.length / 10).toFixed(0)}
+          onChange={(_, value) => {
+            setPage(value);
+            window.scroll(0, 450);
+          }}
           style={{
             padding: 20,
             width: "100%",
             display: "flex",
             justifyContent: "center",
+            "& .MuiPaginationItem-root": {
+              color: "gold",
+            },
           }}
         />
       </Container>
