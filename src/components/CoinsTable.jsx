@@ -32,27 +32,9 @@ function CoinsTable() {
   const fetchCoins = async () => {
     setLoading(true);
     try {
-      let cachedData = localStorage.getItem("cachedCoins");
-      if (cachedData) {
-        cachedData = JSON.parse(cachedData);
-        const { timestamp, data: cachedCoins } = cachedData;
-        const currentTime = new Date().getTime();
-        const cacheExpiry = 60000; // Cache expiry time (1 minute)
-        if (currentTime - timestamp < cacheExpiry) {
-          setCoins(cachedCoins);
-          setLoading(false);
-          return;
-        }
-      }
-
       const { data } = await axios.get(CoinList(currency));
       setCoins(data);
       setLoading(false);
-
-      localStorage.setItem(
-        "cachedCoins",
-        JSON.stringify({ timestamp: new Date().getTime(), data })
-      );
     } catch (error) {
       console.error("Error fetching coins:", error);
     }
