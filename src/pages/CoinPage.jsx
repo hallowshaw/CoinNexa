@@ -7,6 +7,8 @@ import { ThemeProvider, styled } from "@mui/material/styles";
 import createTheme from "@mui/material/styles/createTheme";
 import CoinInfo from "./../components/CoinInfo";
 import { Typography } from "@mui/material";
+import { numberWithCommas } from "../components/Banner/TrendingCarousel";
+import LinearProgress from "@mui/material/LinearProgress";
 
 function CoinPage() {
   const { id } = useParams();
@@ -61,6 +63,26 @@ function CoinPage() {
     textAlign: "justify",
   }));
 
+  const MarketData = styled("div")(() => ({
+    alignSelf: "start",
+    padding: 25,
+    paddingTop: 10,
+    width: "100%",
+    "@media (max-width: 960px)": {
+      display: "flex",
+      justifyContent: "space-around",
+    },
+    "@media (max-width: 600px)": {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    "@media (max-width: 400px)": {
+      alignItems: "start",
+    },
+  }));
+
+  if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
+
   return (
     <>
       <MainContainer>
@@ -81,6 +103,44 @@ function CoinPage() {
               }}
             />
           </Typography>
+          <MarketData>
+            <span style={{ display: "flex" }}>
+              <Typography variant="h5">
+                <Heading>Rank:</Heading>
+              </Typography>
+              &nbsp; &nbsp;
+              <Typography variant="h5" style={{ fontFamily: "Montserrat" }}>
+                {coin?.market_cap_rank}
+              </Typography>
+            </span>
+            <span style={{ display: "flex" }}>
+              <Typography variant="h5">
+                <Heading>Current Price:</Heading>
+              </Typography>
+              &nbsp; &nbsp;
+              <Typography variant="h5" style={{ fontFamily: "Montserrat" }}>
+                {symbol}{" "}
+                {numberWithCommas(
+                  coin?.market_data.current_price[currency.toLowerCase()]
+                )}
+              </Typography>
+            </span>
+            <span style={{ display: "flex" }}>
+              <Typography variant="h5">
+                <Heading>Market Cap:</Heading>
+              </Typography>
+              &nbsp; &nbsp;
+              <Typography variant="h5" style={{ fontFamily: "Montserrat" }}>
+                {symbol}{" "}
+                {numberWithCommas(
+                  coin?.market_data.market_cap[currency.toLowerCase()]
+                    .toString()
+                    .slice(0, -6)
+                )}
+                M
+              </Typography>
+            </span>
+          </MarketData>
         </Sidebar>
         {/* Chart */}
         <CoinInfo coin={coin} />
