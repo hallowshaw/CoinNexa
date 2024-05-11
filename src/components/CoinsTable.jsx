@@ -49,8 +49,8 @@ function CoinsTable() {
   const handleSearch = () => {
     return coins.filter(
       (coin) =>
-        coin.name.toLowerCase().includes(search) ||
-        coin.symbol.toLowerCase().includes(search)
+        coin.name.toLowerCase().includes(search.toLowerCase()) ||
+        coin.symbol.toLowerCase().includes(search.toLowerCase())
     );
   };
 
@@ -86,17 +86,20 @@ function CoinsTable() {
             <LinearProgress style={{ backgroundColor: "gold" }} />
           ) : (
             <Table aria-label="simple table">
-              <TableHead style={{ backgroundColor: "#EEBC1D" }}>
-                <TableRow>
+              <TableHead
+                style={{ backgroundColor: "#EEBC1D", display: "block" }}
+              >
+                <TableRow style={{ display: "flex" }}>
                   {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
                     <TableCell
                       style={{
                         color: "black",
                         fontWeight: "700",
                         fontFamily: "Montserrat",
+                        flex: 1,
+                        textAlign: head === "Coin" ? "left" : "right",
                       }}
                       key={head}
-                      align={head === "Coin" ? "" : "right"}
                     >
                       {head}
                     </TableCell>
@@ -119,7 +122,13 @@ function CoinsTable() {
                           <TableCell
                             component="th"
                             scope="row"
-                            style={{ display: "flex", gap: 15 }}
+                            style={{
+                              display: "flex",
+                              gap: 15,
+                              flex: 1,
+                              alignItems: "center",
+                              textAlign: "left",
+                            }}
                           >
                             <img
                               src={row?.image}
@@ -146,21 +155,35 @@ function CoinsTable() {
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell
+                            align="right"
+                            style={{
+                              flex: 1,
+                              textAlign: "right",
+                            }}
+                          >
                             {symbol}{" "}
                             {numberWithCommas(row.current_price.toFixed(2))}
                           </TableCell>
                           <TableCell
                             align="right"
                             style={{
+                              flex: 1,
                               color: profit > 0 ? "rgb(14, 203, 129)" : "red",
                               fontWeight: 500,
+                              textAlign: "right",
                             }}
                           >
                             {profit && "+"}
                             {row.price_change_percentage_24h.toFixed(2)}%
                           </TableCell>
-                          <TableCell align="right">
+                          <TableCell
+                            align="right"
+                            style={{
+                              flex: 1,
+                              textAlign: "right",
+                            }}
+                          >
                             {symbol}{" "}
                             {numberWithCommas(
                               row.market_cap.toString().slice(0, -6)
@@ -187,9 +210,6 @@ function CoinsTable() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            "& .MuiPaginationItem-root": {
-              color: "gold",
-            },
           }}
         />
       </Container>
