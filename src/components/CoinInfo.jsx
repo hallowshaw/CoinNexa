@@ -15,13 +15,21 @@ Chart.register(...registerables);
 function CoinInfo({ coin }) {
   const [historicalData, setHistoricalData] = useState();
   const [days, setDays] = useState(1);
-
+  const [loading, setLoading] = useState(false); // Introduce loading state
   const { currency } = CryptoState();
 
   const fetchHistoricalData = async () => {
-    const { data } = await axios.get(HistoricalChart(coin.id, days, currency));
-
-    setHistoricalData(data.prices);
+    setLoading(true); // Set loading state to true before fetching data
+    try {
+      const { data } = await axios.get(
+        HistoricalChart(coin.id, days, currency)
+      );
+      setHistoricalData(data.prices);
+    } catch (error) {
+      console.error("Error fetching historical data:", error);
+    } finally {
+      setLoading(false); // Set loading state back to false after data is fetched
+    }
   };
 
   useEffect(() => {
@@ -53,40 +61,48 @@ function CoinInfo({ coin }) {
   return (
     <ThemeProvider theme={darkTheme}>
       <MainContainer>
-        {!historicalData ? (
+        {loading ? ( // Display circular progress if loading is true
           <CircularProgress
             style={{ color: "gold" }}
             size={250}
             thickness={1}
           />
         ) : (
-          <Line
-            data={{
-              labels: historicalData.map((coin) => {
-                let date = new Date(coin[0]);
-                let time =
-                  date.getHours() > 12
-                    ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                    : `${date.getHours()}:${date.getMinutes()} AM`;
+          <>
+            {historicalData && historicalData.length > 0 ? ( // Check if historicalData is defined and not empty
+              <Line
+                data={{
+                  labels: historicalData.map((coin) => {
+                    let date = new Date(coin[0]);
+                    let time =
+                      date.getHours() > 12
+                        ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                        : `${date.getHours()}:${date.getMinutes()} AM`;
 
-                return days === 1 ? time.toString() : date.toLocaleDateString();
-              }),
-              datasets: [
-                {
-                  data: historicalData.map((coin) => coin[1]),
-                  label: `Price ( Past ${days} Days ) in ${currency}`,
-                  borderColor: "#EEBC1D",
-                },
-              ],
-            }}
-            options={{
-              elements: {
-                point: {
-                  radius: 1,
-                },
-              },
-            }}
-          />
+                    return days === 1
+                      ? time.toString()
+                      : date.toLocaleDateString();
+                  }),
+                  datasets: [
+                    {
+                      data: historicalData.map((coin) => coin[1]),
+                      label: `Price ( Past ${days} Days ) in ${currency}`,
+                      borderColor: "#EEBC1D",
+                    },
+                  ],
+                }}
+                options={{
+                  elements: {
+                    point: {
+                      radius: 1,
+                    },
+                  },
+                }}
+              />
+            ) : (
+              <div>No historical data available</div> // Show a message if historicalData is empty
+            )}
+          </>
         )}
         <div
           style={{
@@ -101,7 +117,6 @@ function CoinInfo({ coin }) {
               key={day.value}
               onClick={() => {
                 setDays(day.value);
-                setflag(false);
               }}
               selected={day.value === days}
             >

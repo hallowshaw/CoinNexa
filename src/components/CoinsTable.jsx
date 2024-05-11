@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CoinList } from "../config/api";
 import { CryptoState } from "../CryptoContext";
 import axios from "axios";
-import { ThemeProvider, styled } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import createTheme from "@mui/material/styles/createTheme";
 import { numberWithCommas } from "./Banner/TrendingCarousel";
 import {
@@ -28,10 +28,6 @@ function CoinsTable() {
   const navigateTo = useNavigate();
 
   const { currency, symbol } = CryptoState();
-
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const fetchCoins = async () => {
     setLoading(true);
@@ -80,16 +76,6 @@ function CoinsTable() {
         coin.symbol.toLowerCase().includes(search.toLowerCase())
     );
   };
-
-  const RowStyles = styled("div")(() => ({
-    backgroundColor: "#16171a",
-    cursor: "pointer",
-    "&:hover": {
-      backgroundColor: "#131111",
-    },
-    fontFamily: "Montserrat",
-    display: "flex",
-  }));
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -144,80 +130,87 @@ function CoinsTable() {
                       <TableRow
                         onClick={() => navigateTo(`/coins/${row.id}`)}
                         key={row.name}
+                        sx={{
+                          backgroundColor: "#16171a",
+                          cursor: "pointer",
+                          "&:hover": {
+                            backgroundColor: "#131111",
+                          },
+                          fontFamily: "Montserrat",
+                          display: "flex",
+                        }}
                       >
-                        <RowStyles>
-                          <TableCell
-                            component="th"
-                            scope="row"
+                        <TableCell
+                          component="th"
+                          scope="row"
+                          style={{
+                            display: "flex",
+                            gap: 15,
+                            flex: 1,
+                            alignItems: "center",
+                            textAlign: "left",
+                          }}
+                        >
+                          <img
+                            src={row?.image}
+                            alt={row.name}
+                            height="50"
+                            style={{ marginBottom: 10 }}
+                          />
+                          <div
                             style={{
                               display: "flex",
-                              gap: 15,
-                              flex: 1,
-                              alignItems: "center",
-                              textAlign: "left",
+                              flexDirection: "column",
                             }}
                           >
-                            <img
-                              src={row?.image}
-                              alt={row.name}
-                              height="50"
-                              style={{ marginBottom: 10 }}
-                            />
-                            <div
+                            <span
                               style={{
-                                display: "flex",
-                                flexDirection: "column",
+                                textTransform: "uppercase",
+                                fontSize: 22,
                               }}
                             >
-                              <span
-                                style={{
-                                  textTransform: "uppercase",
-                                  fontSize: 22,
-                                }}
-                              >
-                                {row.symbol}
-                              </span>
-                              <span style={{ color: "darkgrey" }}>
-                                {row.name}
-                              </span>
-                            </div>
-                          </TableCell>
-                          <TableCell
-                            align="right"
-                            style={{
-                              flex: 1,
-                              textAlign: "right",
-                            }}
-                          >
-                            {symbol}{" "}
-                            {numberWithCommas(row.current_price.toFixed(2))}
-                          </TableCell>
-                          <TableCell
-                            align="right"
-                            style={{
-                              flex: 1,
-                              color: profit > 0 ? "rgb(14, 203, 129)" : "red",
-                              fontWeight: 500,
-                              textAlign: "right",
-                            }}
-                          >
-                            {profit && "+"}
-                            {row.price_change_percentage_24h.toFixed(2)}%
-                          </TableCell>
-                          <TableCell
-                            align="right"
-                            style={{
-                              flex: 1,
-                              textAlign: "right",
-                            }}
-                          >
-                            {symbol}{" "}
-                            {numberWithCommas(
-                              row.market_cap.toString().slice(0, -6)
-                            )}
-                            M
-                          </TableCell>
-                        </RowStyles>
+                              {row.symbol}
+                            </span>
+                            <span style={{ color: "darkgrey" }}>
+                              {row.name}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          style={{
+                            flex: 1,
+                            textAlign: "right",
+                          }}
+                        >
+                          {symbol}{" "}
+                          {numberWithCommas(row.current_price.toFixed(2))}
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          style={{
+                            flex: 1,
+                            color: profit > 0 ? "rgb(14, 203, 129)" : "red",
+                            fontWeight: 500,
+                            textAlign: "right",
+                          }}
+                        >
+                          {profit && "+"}
+                          {row.price_change_percentage_24h.toFixed(2)}%
+                        </TableCell>
+                        <TableCell
+                          align="right"
+                          style={{
+                            flex: 1,
+                            textAlign: "right",
+                          }}
+                        >
+                          {symbol}{" "}
+                          {numberWithCommas(
+                            row.market_cap.toString().slice(0, -6)
+                          )}
+                          M
+                        </TableCell>
                       </TableRow>
                     );
                   })}
